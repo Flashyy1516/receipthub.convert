@@ -48,16 +48,19 @@
       iframeDoc.fonts.ready.then(() => {
         const body = iframeDoc.body;
 
-        // Imposta larghezza e altezza precise per il rendering completo
+        // Forza l'iframe a caricare l'intero contenuto, anche quello oltre la viewport
         const width = body.scrollWidth;
         const height = body.scrollHeight;
 
+        // Aumenta la risoluzione del PNG
         html2canvas(body, {
           width: width,
           height: height,
           windowWidth: width,
           windowHeight: height,
-          scale: 2 // migliora qualità PNG
+          scale: 2, // migliora la qualità PNG
+          useCORS: true, // utile se hai risorse da un dominio diverso
+          logging: true // per diagnosticare eventuali errori
         }).then(canvas => {
           const img = document.createElement('img');
           img.src = canvas.toDataURL('image/png');
